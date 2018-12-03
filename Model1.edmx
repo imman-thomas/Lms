@@ -1,0 +1,352 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="SA47Team09AlibraryModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Books">
+          <Key>
+            <PropertyRef Name="BookID" />
+          </Key>
+          <Property Name="BookID" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="BookTitle" Type="nvarchar(max)" />
+          <Property Name="BookGenre" Type="nvarchar(max)" />
+          <Property Name="Author" Type="nvarchar(max)" />
+          <Property Name="BookSection" Type="nvarchar(max)" />
+          <Property Name="BookInStock" Type="int" />
+          <Property Name="BookLended" Type="int" />
+        </EntityType>
+        <EntityType Name="IssueTrans">
+          <Key>
+            <PropertyRef Name="TransactionID" />
+          </Key>
+          <Property Name="TransactionID" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="MemberID" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DateIssue" Type="datetime" />
+          <Property Name="DateDue" Type="datetime" />
+          <Property Name="LoginID" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Librarians">
+          <Key>
+            <PropertyRef Name="LoginID" />
+          </Key>
+          <Property Name="LoginID" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="255" />
+          <Property Name="SecurityAns" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Members">
+          <Key>
+            <PropertyRef Name="MemberID" />
+          </Key>
+          <Property Name="MemberID" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="MemberName" Type="nvarchar" MaxLength="255" />
+          <Property Name="MemberNRIC" Type="nvarchar(max)" />
+          <Property Name="MemberEmail" Type="nvarchar(max)" />
+          <Property Name="MemberPhone" Type="int" />
+          <Property Name="MemberDoB" Type="datetime2" Precision="7" />
+          <Property Name="MemberAddr" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="TransactionDetails">
+          <Key>
+            <PropertyRef Name="key" />
+          </Key>
+          <Property Name="key" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BookID" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TransactionID" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DateActualReturn" Type="datetime" />
+          <Property Name="BorrowStatus" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_IssueTrans_Librarians">
+          <End Role="Librarians" Type="Self.Librarians" Multiplicity="1" />
+          <End Role="IssueTrans" Type="Self.IssueTrans" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Librarians">
+              <PropertyRef Name="LoginID" />
+            </Principal>
+            <Dependent Role="IssueTrans">
+              <PropertyRef Name="LoginID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IssueTrans_Members">
+          <End Role="Members" Type="Self.Members" Multiplicity="1" />
+          <End Role="IssueTrans" Type="Self.IssueTrans" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Members">
+              <PropertyRef Name="MemberID" />
+            </Principal>
+            <Dependent Role="IssueTrans">
+              <PropertyRef Name="MemberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TransactionDetails_Books">
+          <End Role="Books" Type="Self.Books" Multiplicity="1" />
+          <End Role="TransactionDetails" Type="Self.TransactionDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Books">
+              <PropertyRef Name="BookID" />
+            </Principal>
+            <Dependent Role="TransactionDetails">
+              <PropertyRef Name="BookID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TransactionDetails_IssueTrans1">
+          <End Role="IssueTrans" Type="Self.IssueTrans" Multiplicity="1" />
+          <End Role="TransactionDetails" Type="Self.TransactionDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IssueTrans">
+              <PropertyRef Name="TransactionID" />
+            </Principal>
+            <Dependent Role="TransactionDetails">
+              <PropertyRef Name="TransactionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SA47Team09AlibraryModelStoreContainer">
+          <EntitySet Name="Books" EntityType="Self.Books" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="IssueTrans" EntityType="Self.IssueTrans" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Librarians" EntityType="Self.Librarians" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Members" EntityType="Self.Members" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TransactionDetails" EntityType="Self.TransactionDetails" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_IssueTrans_Librarians" Association="Self.FK_IssueTrans_Librarians">
+            <End Role="Librarians" EntitySet="Librarians" />
+            <End Role="IssueTrans" EntitySet="IssueTrans" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IssueTrans_Members" Association="Self.FK_IssueTrans_Members">
+            <End Role="Members" EntitySet="Members" />
+            <End Role="IssueTrans" EntitySet="IssueTrans" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TransactionDetails_Books" Association="Self.FK_TransactionDetails_Books">
+            <End Role="Books" EntitySet="Books" />
+            <End Role="TransactionDetails" EntitySet="TransactionDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TransactionDetails_IssueTrans1" Association="Self.FK_TransactionDetails_IssueTrans1">
+            <End Role="IssueTrans" EntitySet="IssueTrans" />
+            <End Role="TransactionDetails" EntitySet="TransactionDetails" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SA47Team09AlibraryModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Book">
+          <Key>
+            <PropertyRef Name="BookID" />
+          </Key>
+          <Property Name="BookID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BookTitle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BookGenre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Author" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BookSection" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BookInStock" Type="Int32" />
+          <Property Name="BookLended" Type="Int32" />
+          <NavigationProperty Name="TransactionDetails" Relationship="Self.FK_TransactionDetails_Books" FromRole="Books" ToRole="TransactionDetails" />
+        </EntityType>
+        <EntityType Name="Librarian">
+          <Key>
+            <PropertyRef Name="LoginID" />
+          </Key>
+          <Property Name="LoginID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SecurityAns" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="IssueTrans" Relationship="SA47Team09AlibraryModel.FK_IssueTrans_Librarians" FromRole="Librarian" ToRole="IssueTran" />
+        </EntityType>
+        <EntityType Name="Member">
+          <Key>
+            <PropertyRef Name="MemberID" />
+          </Key>
+          <Property Name="MemberID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MemberName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MemberNRIC" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MemberEmail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MemberPhone" Type="Int32" />
+          <Property Name="MemberDoB" Type="DateTime" Precision="7" />
+          <Property Name="MemberAddr" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="IssueTrans" Relationship="SA47Team09AlibraryModel.FK_IssueTrans_Members" FromRole="Member" ToRole="IssueTran" />
+        </EntityType>
+        <EntityType Name="TransactionDetail">
+          <Key>
+            <PropertyRef Name="key" />
+          </Key>
+          <Property Name="key" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BookID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TransactionID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DateActualReturn" Type="DateTime" Precision="3" />
+          <Property Name="BorrowStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Book" Relationship="Self.FK_TransactionDetails_Books" FromRole="TransactionDetails" ToRole="Books" />
+          <NavigationProperty Name="IssueTran" Relationship="SA47Team09AlibraryModel.FK_TransactionDetails_IssueTrans1" FromRole="TransactionDetail" ToRole="IssueTran" />
+        </EntityType>
+        <Association Name="FK_TransactionDetails_Books">
+          <End Role="Books" Type="Self.Book" Multiplicity="1" />
+          <End Role="TransactionDetails" Type="Self.TransactionDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Books">
+              <PropertyRef Name="BookID" />
+            </Principal>
+            <Dependent Role="TransactionDetails">
+              <PropertyRef Name="BookID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Libraryentities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Books" EntityType="Self.Book" />
+          <EntitySet Name="Librarians" EntityType="Self.Librarian" />
+          <EntitySet Name="Members" EntityType="Self.Member" />
+          <EntitySet Name="TransactionDetails" EntityType="Self.TransactionDetail" />
+          <AssociationSet Name="FK_TransactionDetails_Books" Association="Self.FK_TransactionDetails_Books">
+            <End Role="Books" EntitySet="Books" />
+            <End Role="TransactionDetails" EntitySet="TransactionDetails" />
+          </AssociationSet>
+          <EntitySet Name="IssueTrans" EntityType="SA47Team09AlibraryModel.IssueTran" />
+          <AssociationSet Name="FK_IssueTrans_Librarians" Association="SA47Team09AlibraryModel.FK_IssueTrans_Librarians">
+            <End Role="Librarian" EntitySet="Librarians" />
+            <End Role="IssueTran" EntitySet="IssueTrans" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IssueTrans_Members" Association="SA47Team09AlibraryModel.FK_IssueTrans_Members">
+            <End Role="Member" EntitySet="Members" />
+            <End Role="IssueTran" EntitySet="IssueTrans" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TransactionDetails_IssueTrans1" Association="SA47Team09AlibraryModel.FK_TransactionDetails_IssueTrans1">
+            <End Role="IssueTran" EntitySet="IssueTrans" />
+            <End Role="TransactionDetail" EntitySet="TransactionDetails" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="IssueTran">
+          <Key>
+            <PropertyRef Name="TransactionID" />
+          </Key>
+          <Property Name="TransactionID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MemberID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DateIssue" Type="DateTime" Precision="3" />
+          <Property Name="DateDue" Type="DateTime" Precision="3" />
+          <Property Name="LoginID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Librarian" Relationship="SA47Team09AlibraryModel.FK_IssueTrans_Librarians" FromRole="IssueTran" ToRole="Librarian" />
+          <NavigationProperty Name="Member" Relationship="SA47Team09AlibraryModel.FK_IssueTrans_Members" FromRole="IssueTran" ToRole="Member" />
+          <NavigationProperty Name="TransactionDetails" Relationship="SA47Team09AlibraryModel.FK_TransactionDetails_IssueTrans1" FromRole="IssueTran" ToRole="TransactionDetail" />
+        </EntityType>
+        <Association Name="FK_IssueTrans_Librarians">
+          <End Type="SA47Team09AlibraryModel.Librarian" Role="Librarian" Multiplicity="1" />
+          <End Type="SA47Team09AlibraryModel.IssueTran" Role="IssueTran" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Librarian">
+              <PropertyRef Name="LoginID" />
+            </Principal>
+            <Dependent Role="IssueTran">
+              <PropertyRef Name="LoginID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IssueTrans_Members">
+          <End Type="SA47Team09AlibraryModel.Member" Role="Member" Multiplicity="1" />
+          <End Type="SA47Team09AlibraryModel.IssueTran" Role="IssueTran" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Member">
+              <PropertyRef Name="MemberID" />
+            </Principal>
+            <Dependent Role="IssueTran">
+              <PropertyRef Name="MemberID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TransactionDetails_IssueTrans1">
+          <End Type="SA47Team09AlibraryModel.IssueTran" Role="IssueTran" Multiplicity="1" />
+          <End Type="SA47Team09AlibraryModel.TransactionDetail" Role="TransactionDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IssueTran">
+              <PropertyRef Name="TransactionID" />
+            </Principal>
+            <Dependent Role="TransactionDetail">
+              <PropertyRef Name="TransactionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SA47Team09AlibraryModelStoreContainer" CdmEntityContainer="Libraryentities">
+          <EntitySetMapping Name="Books">
+            <EntityTypeMapping TypeName="SA47Team09AlibraryModel.Book">
+              <MappingFragment StoreEntitySet="Books">
+                <ScalarProperty Name="BookID" ColumnName="BookID" />
+                <ScalarProperty Name="BookTitle" ColumnName="BookTitle" />
+                <ScalarProperty Name="BookGenre" ColumnName="BookGenre" />
+                <ScalarProperty Name="Author" ColumnName="Author" />
+                <ScalarProperty Name="BookSection" ColumnName="BookSection" />
+                <ScalarProperty Name="BookInStock" ColumnName="BookInStock" />
+                <ScalarProperty Name="BookLended" ColumnName="BookLended" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Librarians">
+            <EntityTypeMapping TypeName="SA47Team09AlibraryModel.Librarian">
+              <MappingFragment StoreEntitySet="Librarians">
+                <ScalarProperty Name="LoginID" ColumnName="LoginID" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="SecurityAns" ColumnName="SecurityAns" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Members">
+            <EntityTypeMapping TypeName="SA47Team09AlibraryModel.Member">
+              <MappingFragment StoreEntitySet="Members">
+                <ScalarProperty Name="MemberID" ColumnName="MemberID" />
+                <ScalarProperty Name="MemberName" ColumnName="MemberName" />
+                <ScalarProperty Name="MemberNRIC" ColumnName="MemberNRIC" />
+                <ScalarProperty Name="MemberEmail" ColumnName="MemberEmail" />
+                <ScalarProperty Name="MemberPhone" ColumnName="MemberPhone" />
+                <ScalarProperty Name="MemberDoB" ColumnName="MemberDoB" />
+                <ScalarProperty Name="MemberAddr" ColumnName="MemberAddr" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TransactionDetails">
+            <EntityTypeMapping TypeName="SA47Team09AlibraryModel.TransactionDetail">
+              <MappingFragment StoreEntitySet="TransactionDetails">
+                <ScalarProperty Name="key" ColumnName="key" />
+                <ScalarProperty Name="BookID" ColumnName="BookID" />
+                <ScalarProperty Name="TransactionID" ColumnName="TransactionID" />
+                <ScalarProperty Name="DateActualReturn" ColumnName="DateActualReturn" />
+                <ScalarProperty Name="BorrowStatus" ColumnName="BorrowStatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IssueTrans">
+            <EntityTypeMapping TypeName="SA47Team09AlibraryModel.IssueTran">
+              <MappingFragment StoreEntitySet="IssueTrans">
+                <ScalarProperty Name="LoginID" ColumnName="LoginID" />
+                <ScalarProperty Name="DateDue" ColumnName="DateDue" />
+                <ScalarProperty Name="DateIssue" ColumnName="DateIssue" />
+                <ScalarProperty Name="MemberID" ColumnName="MemberID" />
+                <ScalarProperty Name="TransactionID" ColumnName="TransactionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

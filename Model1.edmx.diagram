@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e3e4fffc96824c87905df4f9e0bef4f3" Name="Diagram1" ZoomLevel="83">
+        <EntityTypeShape EntityType="SA47Team09AlibraryModel.Book" Width="1.5" PointX="3" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SA47Team09AlibraryModel.Librarian" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SA47Team09AlibraryModel.Member" Width="1.5" PointX="0.75" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SA47Team09AlibraryModel.TransactionDetail" Width="1.5" PointX="5.25" PointY="1.125" IsExpanded="true" />
+        <AssociationConnector Association="SA47Team09AlibraryModel.FK_TransactionDetails_Books" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="SA47Team09AlibraryModel.IssueTran" Width="1.5" PointX="3" PointY="1.25" />
+        <AssociationConnector Association="SA47Team09AlibraryModel.FK_IssueTrans_Librarians" />
+        <AssociationConnector Association="SA47Team09AlibraryModel.FK_IssueTrans_Members" />
+        <AssociationConnector Association="SA47Team09AlibraryModel.FK_TransactionDetails_IssueTrans1" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
